@@ -2,8 +2,12 @@ import "../css/quoteGenerator.css";
 import { useState } from "react";
 import { toast, ToastContainer, Zoom } from "react-toastify";
 
+type Quote = {
+  quote: string;
+  author: string;
+};
 type Props = {
-  list: string[];
+  list: Quote[];
 };
 
 const QuoteGenerator = ({ list }: Props) => {
@@ -21,16 +25,17 @@ const QuoteGenerator = ({ list }: Props) => {
   const [quoteId, setQuoteId] = useState(randomQuoteId());
 
   const copyQuote = () => {
-    navigator.clipboard.writeText(list[quoteId]);
-    toast(`Copied advice #${formatQuoteNr(quoteId)} to clipboard`);
+    navigator.clipboard.writeText(list[quoteId].quote);
+    toast(`Copied ${list[quoteId].author}'s advice to clipboard`);
   };
 
   return (
     <>
       <div className="quote-generator">
-        <h2>Advice #{formatQuoteNr(quoteId)}</h2>
+        <h3>Advice #{formatQuoteNr(quoteId)}</h3>
+        <h2>{list[quoteId].author}</h2>
         <blockquote>
-          <p>{list[quoteId]}</p>
+          <p>{list[quoteId].quote}</p>
           <button onClick={copyQuote}>
             <i className="fa-regular fa-copy"></i>
           </button>

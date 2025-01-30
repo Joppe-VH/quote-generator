@@ -21,13 +21,18 @@
   padding-bottom: 68px;
   border-radius: 14px;
   position: relative;
-  h2 {
+  h2,
+  h3 {
     color: var(--qg-color-accent);
     text-transform: uppercase;
     letter-spacing: 0.4rem;
     font-weight: 600;
     font-size: smaller;
     font-family: "Makuta", sans-serif;
+  }
+  h3 {
+    color: var(--qg-color-subtle);
+    margin-bottom: 8px;
   }
   blockquote {
     padding: 26px 0;

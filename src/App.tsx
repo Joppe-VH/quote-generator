@@ -1,7 +1,5 @@
 import QuoteGenerator from "./components/QuoteGenerator";
-import data from "./data.json";
-
-const quotes = data.map((d) => d.quote);
+import quotes from "./data.json";
 
 function App() {
   return (
