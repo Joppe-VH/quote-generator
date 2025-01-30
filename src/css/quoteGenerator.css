@@ -1,0 +1,120 @@
+@import url("https://fonts.googleapis.com/css2?family=Mukta:wght@400;600&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css");
+
+:root {
+  --qg-color-accent: #53ffaa;
+  --qg-color-bg: #313a49;
+  --qg-color: #d4e9ef;
+  --qg-color-subtle: #465368;
+  --qg-color-dark: #202632;
+  --toastify-color-dark: var(--qg-color-bg);
+  --toastify-text-color-dark: var(--qg-color);
+  --toastify-color-progress-dark: var(--qg-color-accent);
+}
+
+.quote-generator {
+  width: 100%;
+  background-color: var(--qg-color-bg);
+  color: var(--qg-color);
+  text-align: center;
+  padding: 48px;
+  padding-bottom: 68px;
+  border-radius: 14px;
+  position: relative;
+  h2 {
+    color: var(--qg-color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.4rem;
+    font-weight: 600;
+    font-size: smaller;
+    font-family: "Makuta", sans-serif;
+  }
+  blockquote {
+    padding: 26px 0;
+    position: relative;
+    &:hover button {
+      display: block;
+    }
+    p {
+      align-content: center;
+      font-size: 2.4rem;
+      line-height: 3.8rem;
+      min-height: 12rem;
+      quotes: "\201c""\201d";
+      &::before,
+      &::after {
+        font-weight: 700;
+        content: open-quote;
+      }
+      &::after {
+        content: close-quote;
+      }
+    }
+    button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: transparent;
+      border: none;
+      color: var(--qg-color-subtle);
+      font-size: 2rem;
+      padding: 1rem;
+      display: none;
+      cursor: pointer;
+      &:hover {
+        color: var(--qg-color-accent);
+      }
+      &:active {
+        translate: 0 2px;
+      }
+    }
+  }
+  div:has(hr) {
+    position: relative;
+    hr {
+      border: none;
+      height: 1px;
+      background-color: var(--qg-color-subtle);
+    }
+    i {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+      background-color: var(--qg-color-bg);
+      padding: 0 10px;
+    }
+  }
+  > button {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    translate: -50% 50%;
+    border: none;
+    height: 64px;
+    aspect-ratio: 1/1;
+    border-radius: 9000px;
+    font-size: 29px;
+    background-color: var(--qg-color-accent);
+    color: var(--qg-color-dark);
+    &:hover:not(:active) {
+      translate: -50% calc(50% - 2px);
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .quote-generator blockquote {
+    p {
+      min-height: 24rem;
+    }
+  }
+}
+
+@media (pointer: none), (pointer: coarse) {
+  .quote-generator blockquote {
+    button {
+      display: block;
+    }
+  }
+}

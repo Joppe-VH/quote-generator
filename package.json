@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "surge ./dist jvh-quote-gen.surge.sh",
+    "postdeploy": "start brave https://jvh-quote-gen.surge.sh"
   },
   "dependencies": {
     "react": "^18.3.1",
