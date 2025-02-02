@@ -1,13 +1,13 @@
 import QuoteGenerator from "./components/QuoteGenerator";
-import quotes from "./data.json";
+import { LoadingBarContainer } from "react-top-loading-bar";
 
 function App() {
   return (
-    <>
+    <LoadingBarContainer>
       <main>
-        <QuoteGenerator list={quotes} />
+        <QuoteGenerator />
       </main>
-    </>
+    </LoadingBarContainer>
   );
 }
 

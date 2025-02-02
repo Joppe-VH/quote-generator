@@ -1,50 +1,98 @@
 import "../css/quoteGenerator.css";
-import { useState } from "react";
 import { toast, ToastContainer, Zoom } from "react-toastify";
+import useSWR from "swr";
+import ContentLoader from "react-content-loader";
+import { useLoadingBar } from "react-top-loading-bar";
 
 type Quote = {
-  quote: string;
-  author: string;
-};
-type Props = {
-  list: Quote[];
+  id: number;
+  advice: string;
 };
 
-const QuoteGenerator = ({ list }: Props) => {
-  const randomQuoteId = (current?: number) => {
-    let quoteId;
-    do {
-      quoteId = Math.floor(Math.random() * list.length);
-    } while (quoteId === current);
-    return quoteId;
-  };
+const URL = "https://api.adviceslip.com/advice";
 
-  const formatQuoteNr = (id: number) =>
-    (++id).toString().padStart(list.length.toString().length, "0");
+async function fetchQuote(url: string): Promise<Quote> {
+  const res = await fetch(url);
+  const data = await res.json();
+  await new Promise((resolve) => setTimeout(resolve, 4000));
+  return data?.slip;
+}
 
-  const [quoteId, setQuoteId] = useState(randomQuoteId());
+const QuotePlaceholder = () => (
+  <ContentLoader
+    speed={2}
+    width={"100%"}
+    height={120}
+    viewBox="0 0 400 120"
+    backgroundColor="#465368"
+    foregroundColor="#53ffaa"
+    display={"block"}
+  >
+    <rect x="0" y="30" rx="12" ry="12" width="400" height="24" />
+    <rect x="30" y="74" rx="12" ry="12" width="340" height="24" />
+  </ContentLoader>
+);
+
+const QuoteGenerator = () => {
+  const { start, complete } = useLoadingBar({
+    color: "#19ba99",
+    height: 4,
+  });
+
+  const {
+    data: quote,
+    isLoading,
+    error,
+    mutate,
+  } = useSWR(URL, fetchQuote, {
+    revalidateOnFocus: false,
+  });
+
+  const formatQuoteNr = (id: number) => id.toString().padStart(3, "0");
 
   const copyQuote = () => {
-    navigator.clipboard.writeText(list[quoteId].quote);
-    toast(`Copied ${list[quoteId].author}'s advice to clipboard`);
+    if (!quote) return;
+    navigator.clipboard.writeText(quote.advice);
+    toast(`Copied advice #${formatQuoteNr(quote.id)} to clipboard`);
+  };
+
+  const fetchNewQuote = async () => {
+    start();
+    await mutate();
+    complete();
   };
 
   return (
     <>
       <div className="quote-generator">
-        <h3>Advice #{formatQuoteNr(quoteId)}</h3>
-        <h2>{list[quoteId].author}</h2>
+        {isLoading ? (
+          <h2>Gathering thoughts...</h2>
+        ) : quote && !error ? (
+          <h2>Advice #{formatQuoteNr(quote.id)}</h2>
+        ) : (
+          <h2 className="error">Something went wrong</h2>
+        )}
         <blockquote>
-          <p>{list[quoteId].quote}</p>
-          <button onClick={copyQuote}>
-            <i className="fa-regular fa-copy"></i>
-          </button>
+          {isLoading ? (
+            <QuotePlaceholder />
+          ) : quote && !error ? (
+            <>
+              <p className="quote">{quote.advice}</p>
+              <button onClick={copyQuote}>
+                <i className="fa-regular fa-copy"></i>
+              </button>
+            </>
+          ) : (
+            <p>
+              {error?.message || "An unknown error occurred, try reloading"}
+            </p>
+          )}
         </blockquote>
         <div>
           <hr />
           <i className="fa-solid fa-pause"></i>
         </div>
-        <button onClick={() => setQuoteId((id) => randomQuoteId(id))}>
+        <button onClick={fetchNewQuote}>
           <i className="fa-solid fa-dice-five"></i>
         </button>
       </div>

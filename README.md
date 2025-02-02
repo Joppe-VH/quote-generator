@@ -1,3 +1,3 @@
-# Quote Generator
+# Quote Generator with SWR
 
-[Check it live on surge](https://jvh-quote-gen.surge.sh)
+[Check it live on surge](https://jvh-quote-gen-swr.surge.sh)

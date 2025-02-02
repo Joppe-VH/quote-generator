@@ -34,25 +34,33 @@
     color: var(--qg-color-subtle);
     margin-bottom: 8px;
   }
+  h2.error {
+    color: #ff5353;
+  }
   blockquote {
     padding: 26px 0;
     position: relative;
     &:hover button {
       display: block;
     }
+    svg {
+      height: 12rem;
+    }
     p {
       align-content: center;
       font-size: 2.4rem;
       line-height: 3.8rem;
       min-height: 12rem;
-      quotes: "\201c""\201d";
-      &::before,
-      &::after {
-        font-weight: 700;
-        content: open-quote;
-      }
-      &::after {
-        content: close-quote;
+      &.quote {
+        quotes: "\201c""\201d";
+        &::before,
+        &::after {
+          font-weight: 700;
+          content: open-quote;
+        }
+        &::after {
+          content: close-quote;
+        }
       }
     }
     button {
@@ -110,6 +118,9 @@
 
 @media screen and (max-width: 500px) {
   .quote-generator blockquote {
+    svg {
+      height: 24rem;
+    }
     p {
       min-height: 24rem;
     }
