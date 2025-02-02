@@ -33,6 +33,14 @@ const QuotePlaceholder = () => (
   </ContentLoader>
 );
 
+const formatQuoteNr = (id: number) => id.toString().padStart(3, "0");
+
+const copyQuote = (quote: Quote) => () => {
+  if (!quote) return;
+  navigator.clipboard.writeText(quote.advice);
+  toast(`Copied advice #${formatQuoteNr(quote.id)} to clipboard`);
+};
+
 const QuoteGenerator = () => {
   const { start, complete } = useLoadingBar({
     color: "#19ba99",
@@ -44,17 +52,10 @@ const QuoteGenerator = () => {
     isLoading,
     error,
     mutate,
+    isValidating,
   } = useSWR(URL, fetchQuote, {
     revalidateOnFocus: false,
   });
-
-  const formatQuoteNr = (id: number) => id.toString().padStart(3, "0");
-
-  const copyQuote = () => {
-    if (!quote) return;
-    navigator.clipboard.writeText(quote.advice);
-    toast(`Copied advice #${formatQuoteNr(quote.id)} to clipboard`);
-  };
 
   const fetchNewQuote = async () => {
     start();
@@ -78,7 +79,7 @@ const QuoteGenerator = () => {
           ) : quote && !error ? (
             <>
               <p className="quote">{quote.advice}</p>
-              <button onClick={copyQuote}>
+              <button onClick={copyQuote(quote)}>
                 <i className="fa-regular fa-copy"></i>
               </button>
             </>
@@ -92,7 +93,7 @@ const QuoteGenerator = () => {
           <hr />
           <i className="fa-solid fa-pause"></i>
         </div>
-        <button onClick={fetchNewQuote}>
+        <button disabled={isValidating} onClick={fetchNewQuote}>
           <i className="fa-solid fa-dice-five"></i>
         </button>
       </div>
