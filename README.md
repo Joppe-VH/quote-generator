@@ -5,3 +5,4 @@
 - show placeholder on first load
 - show progressbar on repeat loads
 - disable button during loading.
+- (added a 4s delay during fetches for demo purposes)
